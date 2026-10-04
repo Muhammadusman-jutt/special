@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Will You Go Out With Me?</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: white;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .top {
+            height: 180px;
+            background: #1d1b20;
+            color: white;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .container {
+            padding-top: 60px;
+        }
+
+        h2 {
+            color: #d94b62;
+            font-size: 25px;
+        }
+
+        .character {
+            font-size: 90px;
+            margin: 30px;
+            animation: bounce 1.5s infinite;
+        }
+
+        button {
+            border-radius: 25px;
+            padding: 13px 35px;
+            font-size: 17px;
+            cursor: pointer;
+            margin: 8px;
+        }
+
+        #yes1,
+        #yes2 {
+            background: #ed4b62;
+            color: white;
+            border: none;
+        }
+
+        #yes1:hover,
+        #yes2:hover {
+            transform: scale(1.08);
+        }
+
+        /* DATE SCREEN */
+
+        #dateScreen {
+            display: none;
+            padding-top: 50px;
+        }
+
+        #dateScreen h2 {
+            font-size: 24px;
+        }
+
+        .date-box {
+            margin: 25px auto;
+            width: 85%;
+            max-width: 350px;
+            padding: 25px;
+            background: #fff0f3;
+            border-radius: 20px;
+        }
+
+        input {
+            padding: 12px;
+            border: 2px solid #ed4b62;
+            border-radius: 10px;
+            font-size: 16px;
+        }
+
+        #confirm {
+            background: #ed4b62;
+            color: white;
+            border: none;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        /* HEARTS */
+
+        .heart {
+            position: fixed;
+            bottom: -20px;
+            font-size: 20px;
+            animation: floatUp 5s linear forwards;
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-100vh);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- FIRST SCREEN -->
+
+    <div class="top">
+        💗 A Little Question 💗
+    </div>
+
+    <div class="container" id="mainScreen">
+
+        <h2>
+            Will you go out with me?
+        </h2>
+
+        <div class="character" id="character">
+            🥺💗
+        </div>
+
+        <button id="yes1">
+            Yesss 💗
+        </button>
+
+        <button id="yes2">
+            Yesss 🥰
+        </button>
+
+    </div>
+
+
+    <!-- DATE SCREEN -->
+
+    <div id="dateScreen">
+
+        <h2>
+            Yayy! 🥰💗
+        </h2>
+
+        <div class="character">
+            💕🌸🥰
+        </div>
+
+        <div class="date-box">
+
+            <h3>
+                Which day will you come? 💗
+            </h3>
+
+            <input type="date" id="date">
+
+            <br><br>
+
+            <button id="confirm">
+                Confirm 💕
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const yes1 = document.getElementById("yes1");
+        const yes2 = document.getElementById("yes2");
+
+        const mainScreen = document.getElementById("mainScreen");
+        const dateScreen = document.getElementById("dateScreen");
+
+        const confirm = document.getElementById("confirm");
+        const date = document.getElementById("date");
+
+
+        /* BOTH YES BUTTONS */
+
+        yes1.addEventListener("click", showDateScreen);
+        yes2.addEventListener("click", showDateScreen);
+
+
+        function showDateScreen() {
+
+            mainScreen.style.display = "none";
+
+            dateScreen.style.display = "block";
+
+            createHearts();
+        }
+
+
+        /* CONFIRM DATE */
+
+        confirm.addEventListener("click", function () {
+
+            if (date.value === "") {
+
+                alert("Please choose a day 💗");
+
+                return;
+            }
+
+            const selectedDate =
+                new Date(date.value + "T00:00:00");
+
+            const days = [
+                "Sunday",
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday"
+            ];
+
+            const dayName =
+                days[selectedDate.getDay()];
+
+            const formattedDate =
+                selectedDate.toLocaleDateString(
+                    "en-US",
+                    {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric"
+                    }
+                );
+
+            dateScreen.innerHTML = `
+
+                <div class="container">
+
+                    <h2>
+                        It's a date! 🥰💗
+                    </h2>
+
+                    <div class="character">
+                        💕🌸💐🥰
+                    </div>
+
+                    <h2>
+                        I'll see you on
+                    </h2>
+
+                    <h2>
+                        ${dayName}, ${formattedDate} 💗
+                    </h2>
+
+                    <p>
+                        Can't wait! 🥹💕
+                    </p>
+
+                </div>
+
+            `;
+
+            createHearts();
+        });
+
+
+        /* FLOATING HEARTS */
+
+        function createHearts() {
+
+            setInterval(function () {
+
+                const heart =
+                    document.createElement("div");
+
+                heart.className = "heart";
+
+                heart.innerHTML = "❤️";
+
+                heart.style.left =
+                    Math.random() * 100 + "vw";
+
+                heart.style.fontSize =
+                    (15 + Math.random() * 25) + "px";
+
+                document.body.appendChild(heart);
+
+                setTimeout(function () {
+                    heart.remove();
+                }, 5000);
+
+            }, 300);
+        }
+
+    </script>
+
+</body>
+</html>
